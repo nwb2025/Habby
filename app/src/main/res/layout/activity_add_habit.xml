@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vm"
+            type="com.example.hubby.presentation.viewmodels.HabitViewModel" />
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_create">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="Заниматься спортом"
+                android:maxLength="35"
+                android:singleLine="true"
+                android:text="@={vm.name}"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/name" />
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/desc"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/et_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                />
+            <EditText
+                android:id="@+id/et_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_desc"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                android:hint="Ходить в спортзал хотя бы раз в три дня"
+                android:text="@={vm.desc}"
+                android:singleLine="true"
+                android:maxLength="40"/>
+
+
+            <TextView
+                android:id="@+id/tv_habitType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/habit_type"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/et_desc"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"/>
+
+            <RadioGroup
+                android:id="@+id/rg_h_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_habitType">
+
+                <RadioButton
+                    android:id="@+id/good_habit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/good_habit"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_gray"
+                    android:checked="@={vm.goodH}"/>
+
+                <RadioButton
+                    android:id="@+id/bad_habit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bad_habit"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_gray"
+                    android:textStyle="bold"
+                    android:checked="@={vm.badH}"/>
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_priority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/priority"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/rg_h_type"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"/>
+
+            <Spinner
+                android:id="@+id/priority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_priority"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/dark_gray"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:textSize="16sp"
+                android:entries="@array/priorities"/>
+
+            <TextView
+                android:id="@+id/tv_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/duration"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/priority"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:id="@+id/tv_dur_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Повторять"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_duration"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/dark_gray"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                />
+
+            <EditText
+                android:id="@+id/et_dur1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/tv_dur_1"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_dur_1"
+                app:layout_constraintLeft_toRightOf="@+id/tv_dur_1"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:text="@={vm.frequency}"
+                android:singleLine="true"
+                android:maxLength="2"
+                />
+
+            <TextView
+                android:id="@+id/tv_dur2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/tv_dur_1"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_dur_1"
+                app:layout_constraintLeft_toRightOf="@+id/et_dur1"
+                android:text="@string/tv_dur2"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_gray"
+                />
+
+            <EditText
+                android:id="@+id/et_dur2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/tv_dur_1"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_dur_1"
+                app:layout_constraintLeft_toRightOf="@+id/tv_dur2"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:text="@={vm.count}"
+                android:singleLine="true"
+                android:maxLength="2"
+                />
+
+            <TextView
+                android:id="@+id/tv_dur3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/tv_dur_1"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_dur_1"
+                app:layout_constraintLeft_toRightOf="@+id/et_dur2"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_gray"
+                android:text="@string/tv_days"
+                />
+
+
+            <TextView
+                android:id="@+id/tv_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_pick_color"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_dur_1"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"/>
+
+            <ImageView
+                android:id="@+id/color_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/color_circle"
+                app:layout_constraintTop_toTopOf="@id/tv_color"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:backgroundTint="@color/green"/>
+
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_color"
+                android:layout_marginTop="20dp">
+
+                <HorizontalScrollView
+                    android:id="@+id/sv_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none"
+                    >
+
+                    <LinearLayout
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/ic_hue_gradient"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/c1"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@color/c1"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"
+                            />
+
+                        <ImageView
+                            android:id="@+id/c2"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c2"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"
+                            />
+
+                        <ImageView
+                            android:id="@+id/c3"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c3"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"
+                            />
+
+                        <ImageView
+                            android:id="@+id/c4"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c4"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"
+                            />
+
+                        <ImageView
+                            android:id="@+id/c5"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c5"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"
+                            />
+
+                        <ImageView
+                            android:id="@+id/c6"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:backgroundTint="@color/c6"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+
+                        <ImageView
+                            android:id="@+id/c7"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c7"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+
+                        <ImageView
+                            android:id="@+id/c8"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c8"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+                        <ImageView
+                            android:id="@+id/c9"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c9"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+
+                        <ImageView
+                            android:id="@+id/c10"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c10"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+
+                        <ImageView
+                            android:id="@+id/c11"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c11"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+
+                        <ImageView
+                            android:id="@+id/c12"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c12"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+
+                        <ImageView
+                            android:id="@+id/c13"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c13"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+
+                        <ImageView
+                            android:id="@+id/c14"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c14"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"/>
+
+                        <ImageView
+                            android:id="@+id/c15"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c15"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"
+                            />
+
+                        <ImageView
+                            android:id="@+id/c16"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/c16"
+                            android:src="@drawable/color_form"
+                            android:onClick="pickColor"
+                            />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:text="Создать"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:textStyle="normal"
+        android:background="@drawable/btn_rounded_corners"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
+
+
+</layout>

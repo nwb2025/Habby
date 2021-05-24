@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.ui.SettingsFragment">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <Button
+        android:id="@+id/btn_theme"
+        app:icon="@drawable/ic_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/white"
+        android:text="Тема"
+        android:gravity="center"
+        style="?android:attr/borderlessButtonStyle"
+        />
+
+    <Button
+        app:icon="@drawable/ic_about"
+        android:id="@+id/btn_lang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_theme"
+        android:backgroundTint="@color/white"
+        android:text="Язык"
+        android:gravity="center"
+        style="?android:attr/borderlessButtonStyle"
+        />
+    <Button
+        app:icon="@drawable/ic_about"
+        android:id="@+id/btn_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_lang"
+        android:backgroundTint="@color/white"
+        android:text="О нас "
+        android:gravity="center"
+        style="?android:attr/borderlessButtonStyle"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

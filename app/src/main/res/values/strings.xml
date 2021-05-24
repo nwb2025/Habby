@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Hubby</string>
+    <string name="home">home</string>
+    <string name="settings">settings</string>
+    <string name="about">about</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bad_h">Плохие привычки</string>
+    <string name="good_habits">good habits</string>
+    <string name="desc">Описание</string>
+    <string name="name">Название</string>
+    <string name="habit_type">Тип привычки</string>
+    <string name="bad_habit">Плохая привычка</string>
+    <string name="good_habit">Хорошая привычка</string>
+    <string name="duration">Периодичность</string>
+    <string name="tv_dur2">раз в</string>
+    <string name="tv_dur3">дней</string>
+    <string name="tv_color">Выбрать цвет</string>
+    <string name="tv_days">дней</string>
+    <string name="tv_pick_color">Выберите цвет</string>
+    <string name="priority">Выберите приоритет</string>
+    <string name="settings_ru">Настройки</string>
+    <string name="my_habits">Мои привычки</string>
+
+    <string-array name="priorities">
+        <item>Высокий</item>
+        <item>Средний</item>
+        <item>Низкий</item>
+    </string-array>
+</resources>
