@@ -2,6 +2,11 @@ package com.example.hubby.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.core.domain.interactors.local_db.AddHabit
+import com.example.core.domain.interactors.local_db.DeleteHabit
+import com.example.core.domain.interactors.local_db.GetAllHabits
+import com.example.core.domain.interactors.local_db.UpdateDoneDates
+import com.example.core.domain.interactors.local_db.Updatehabit
 import com.example.core.interactors.local_db.*
 import com.example.core.interactors.retorfit.DeleteHabitFromServer
 import com.example.core.interactors.retorfit.PostHabit
@@ -10,11 +15,9 @@ import com.example.hubby.frameworks.HabitDBMapper
 import com.example.hubby.frameworks.HabitRetrofitMapper
 
 class ViewModelFactory (private val getHabits: GetAllHabits,
-                        private val getHabitsByType: GetByType,
                         private  val addHabit: AddHabit,
                         private val deleteH: DeleteHabit,
                         private val deleteFromS: DeleteHabitFromServer,
-                        private val getHabitsFromServer:GetAllHabits,
                         private val putHabit: PutHabit,
                         private val updateDoneDates: UpdateDoneDates,
                         private val updateDoneOnS:PostHabit,
@@ -38,7 +41,6 @@ class ViewModelFactory (private val getHabits: GetAllHabits,
         else if(modelClass.isAssignableFrom(HabitViewModelForList::class.java)){
             return HabitViewModelForList(
                 getHabits,
-                getHabitsByType,
                 deleteH,
                 deleteFromS,
                 updateDoneDates,

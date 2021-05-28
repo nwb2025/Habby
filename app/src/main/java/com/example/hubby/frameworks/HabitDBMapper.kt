@@ -1,10 +1,10 @@
 package com.example.hubby.frameworks
 
 import com.example.core.domain.models.HabitDomainLayer
-import com.example.hubby.data.db.Habit
+import com.example.hubby.data.models.Habit
 import com.example.hubby.utils.EntityMapper.EntityMapper
 
-class HabitDBMapper : EntityMapper <Habit , HabitDomainLayer>
+class HabitDBMapper : EntityMapper <Habit, HabitDomainLayer>
 {
     override fun mapFromEntity(entity: Habit): HabitDomainLayer {
         return HabitDomainLayer(

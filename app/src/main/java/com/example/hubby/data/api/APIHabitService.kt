@@ -4,6 +4,7 @@ package com.example.hubby.data.api
 import com.example.core.domain.models.Answer
 import com.example.core.domain.models.HabitDomainLayer
 import com.example.core.domain.models.HabitDone
+import com.example.hubby.data.models.HabitResponse
 import com.example.hubby.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.*
@@ -26,5 +27,5 @@ interface APIHabitService
 
     @POST(Constants.POST_URL)
     suspend fun postHabit(@Header("Authorization") token:String ,
-                          @Body habitDone:HabitDone )
+                          @Body habitDone: HabitDone)
 }

@@ -1,7 +1,6 @@
 package com.example.hubby.presentation.ui
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hubby.R
-import com.example.hubby.data.db.Habit
+import com.example.hubby.data.models.Habit
 import com.example.hubby.databinding.FragmentGoodHabitsBinding
 import com.example.hubby.frameworks.HabitDBMapper
 import com.example.hubby.presentation.adapters.RecyclerView_Adapter
@@ -22,7 +21,7 @@ import com.example.hubby.presentation.viewmodels.HabitViewModelForList
 import com.google.gson.Gson
 
 
-class Fragment_GoodHabits : Fragment()
+class FragmentGoodHabits : Fragment()
 {
     private lateinit var binding : FragmentGoodHabitsBinding
     private lateinit var rec_v_adapter: RecyclerView_Adapter
@@ -30,70 +29,54 @@ class Fragment_GoodHabits : Fragment()
     private val mapper:HabitDBMapper = HabitDBMapper()
 
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View?
-    {
+        savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater , R.layout.fragment__good_habits, container, false)
-
-        initRecView()
-
-        viewModel.good_habits?.observe( viewLifecycleOwner, Observer {
-
-          binding.rvHabits.adapter = RecyclerView_Adapter(mapper.mapToEntityList(viewModel.good_habits?.value ?: listOf()) ,
-                  {habit: Habit ->  itemClicked(habit) },
-                  { habit:Habit -> doneListener(habit)  },
-                  { habit:Habit -> editHabitListener(habit)} )
-       })
-
-
-
+        setUpAdapter()
+        setupObservers()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private fun setupObservers(){
+        viewModel.habitList.observe( viewLifecycleOwner, Observer {
+            rec_v_adapter.updateHabitList(mapper.mapToEntityList(viewModel.habitList.value?.filter { it.type == 0 }!!) )
+        })
 
     }
 
-
-
-
-   private  fun initRecView()
-    {
-        rec_v_adapter = RecyclerView_Adapter(mapper.mapToEntityList(viewModel.good_habits?.value ?: listOf() ),
+    private  fun setUpAdapter(){
+        rec_v_adapter = RecyclerView_Adapter(mapper.mapToEntityList(viewModel.habitList.value?.filter { it.type == 0 } ?: listOf() ),
                 { habit: Habit ->  itemClicked(habit) },
-                { habit:Habit -> doneListener(habit) },
-                {habit:Habit -> editHabitListener(habit)})
-        binding.rvHabits.layoutManager = LinearLayoutManager(context)
-        binding.rvHabits.adapter = rec_v_adapter
+                { habit: Habit -> doneListener(habit) },
+                { habit: Habit -> editHabitListener(habit)})
+        binding.rvHabits.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = rec_v_adapter
+        }
     }
 
-    //callback
+    fun updateRecView(s:String?){
+        setUpAdapter()
+        rec_v_adapter.filter.filter(s)
+    }
 
     fun itemClicked(habit: Habit) : Boolean{
         val name = habit.name
         val dialog:AlertDialog.Builder = AlertDialog.Builder(context)
         dialog.setTitle("Удаление привычки").setMessage("Вы действительно хотите удалить привычку ?")
-        dialog.setPositiveButton("Да"){dialogInterface, which ->
+        dialog.setPositiveButton("Да"){ _, _ ->
             viewModel.deleteHabit(habit)
             Toast.makeText(context, " $name была удалена ", Toast.LENGTH_SHORT).show()
-        }.setNegativeButton("Нет"){dialogInterface, which ->
+        }.setNegativeButton("Нет"){ _, _ ->
         }.setCancelable(true).create()
 
         dialog.show()
-
         return true
     }
 
-    fun editHabitListener(habit:Habit) {
-        val intent = Intent(activity, Activity_AddHabit::class.java)
+    fun editHabitListener(habit: Habit) {
+        val intent = Intent(activity, ActivityAddHabit::class.java)
         val gson: Gson = Gson()
         intent.putExtra("habit_edit", gson.toJson(habit))
         startActivity(intent)

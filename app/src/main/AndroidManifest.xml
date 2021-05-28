@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hubby">
-        <activity android:name=".presentation.ui.Activity_Done"></activity>
+        <activity android:name=".presentation.ui.ActivityDone"></activity>
         <activity android:name=".presentation.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.ui.Activity_AddHabit"
+        <activity android:name=".presentation.ui.ActivityAddHabit"
             android:label="Новая привычка"
             android:parentActivityName=".presentation.ui.MainActivity"/>
     </application>

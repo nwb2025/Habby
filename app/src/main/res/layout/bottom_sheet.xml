@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/green"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="40dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Фильтр"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@color/pink"/>
+    <EditText
+        android:id="@+id/editText_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите название привычки"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:backgroundTint="@color/green"
+        android:singleLine="true"
+        android:maxLength="35"
+        />
+</LinearLayout>

@@ -11,8 +11,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.hubby.databinding.ActivityAddHabitBinding
 import com.example.hubby.data.db.AppDataBase
-import com.example.core.data.HabitDataSource
 import com.example.core.data.HabitRepository
+import com.example.core.data.LocalDataDataSource
+import com.example.core.data.RemoteDataDataSource
+import com.example.core.domain.interactors.local_db.AddHabit
+import com.example.core.domain.interactors.local_db.DeleteHabit
+import com.example.core.domain.interactors.local_db.GetAllHabits
+import com.example.core.domain.interactors.local_db.UpdateDoneDates
+import com.example.core.domain.interactors.local_db.Updatehabit
 import com.example.core.interactors.local_db.*
 import com.example.core.interactors.retorfit.DeleteHabitFromServer
 import com.example.core.interactors.retorfit.PostHabit
@@ -21,7 +27,7 @@ import com.example.hubby.presentation.viewmodels.HabitViewModel
 import com.example.hubby.R
 import com.example.hubby.data.api.RetrofitInstance
 import com.example.hubby.data.db.Dao
-import com.example.hubby.data.db.Habit
+import com.example.hubby.data.models.Habit
 import com.example.hubby.frameworks.HabitDBMapper
 import com.example.hubby.frameworks.HabitRetrofitMapper
 import com.example.hubby.frameworks.RetrofitHabitDataSource
@@ -29,48 +35,40 @@ import com.example.hubby.frameworks.RoomHabitDataSource
 import com.example.hubby.presentation.viewmodels.ViewModelFactory
 import com.google.gson.Gson
 
-class Activity_AddHabit : AppCompatActivity()
+class ActivityAddHabit : AppCompatActivity()
 {
     private var db : AppDataBase? = null
     private var hDao : Dao? = null
     private var repo: HabitRepository? = null
     private lateinit var binding : ActivityAddHabitBinding
     private var viewModel: HabitViewModel? = null
-    private var dataSource: RoomHabitDataSource? = null
-    private var repoRetrofit : HabitRepository? = null
-    private var dataSourceRetrofit : RetrofitHabitDataSource? = null
+    private var localDataSource : RoomHabitDataSource? = null
+    private var remoteDataSource : RetrofitHabitDataSource? = null
+    private var reposotory : HabitRepository? = null
     private var color:Int? = -65536
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val priorities = resources.getStringArray( R.array.priorities )
         binding = DataBindingUtil.setContentView(this , R.layout.activity_add_habit )
         val bundle:Bundle?  = intent.extras
-        Log.i("renat", bundle?.getString("name").toString())
-
         // From local DB
         db = AppDataBase.getAppDB( context =  this)
         hDao = db?.habitDao()
-        dataSource = RoomHabitDataSource(hDao)
-        repo = HabitRepository(dataSource as HabitDataSource)
-
-        // From Retrofit Service
-        dataSourceRetrofit = RetrofitHabitDataSource(RetrofitInstance)
-        repoRetrofit = HabitRepository( dataSourceRetrofit as HabitDataSource )
-
+        localDataSource = RoomHabitDataSource(hDao)
+        remoteDataSource =  RetrofitHabitDataSource(RetrofitInstance)
+        reposotory = HabitRepository(
+                localDataSource as LocalDataDataSource,
+                remoteDataSource as RemoteDataDataSource)
         val factory = ViewModelFactory (
-            GetAllHabits(repo as HabitRepository),
-            GetByType(repo as HabitRepository),
-            AddHabit(repo as HabitRepository),
-            DeleteHabit(repo as HabitRepository),
-            DeleteHabitFromServer(repoRetrofit as HabitRepository),
-            GetAllHabits(repoRetrofit as HabitRepository),
-            PutHabit(repoRetrofit as HabitRepository),
-            UpdateDoneDates(repo as HabitRepository),
-            PostHabit(repoRetrofit as HabitRepository),
-                Updatehabit(repo as HabitRepository),
+            GetAllHabits(reposotory as HabitRepository),
+            AddHabit(reposotory as HabitRepository),
+            DeleteHabit(reposotory as HabitRepository),
+            DeleteHabitFromServer(reposotory as HabitRepository),
+            PutHabit(reposotory as HabitRepository),
+            UpdateDoneDates(reposotory as HabitRepository),
+            PostHabit(reposotory as HabitRepository),
+                Updatehabit(reposotory as HabitRepository),
                 HabitDBMapper(),
                 HabitRetrofitMapper())
 
@@ -83,6 +81,7 @@ class Activity_AddHabit : AppCompatActivity()
             this.title = "Редактирование привычки"
             binding.btnCreate.text = "Сохранить"
             val gson = Gson()
+            // TOOD : Error throws here - Haibt class must not be null
             setHabit(gson.fromJson<Habit>(intent.getStringExtra("habit_edit"), Habit::class.java))
 
         }else{
@@ -136,7 +135,7 @@ class Activity_AddHabit : AppCompatActivity()
        // overridePendingTransition(R.anim.fadein, R.anim.fadeout)
     }
 
-    private fun setHabit(habit:Habit){
+    private fun setHabit(habit: Habit){
         binding.vm?.name?.value  = habit.name
         binding.vm?.desc?.value = habit.description
         binding.vm?.frequency?.value = habit.frequency.toString()

@@ -7,8 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.hubby.data.models.Habit
 import com.example.hubby.utils.TypeConverters.TypeConv
-
 
 @Database(
         entities = [Habit::class],
@@ -21,7 +21,6 @@ abstract  class AppDataBase : RoomDatabase() {
 
     companion object
     {
-
         // for migration
         val MIGRATION_1_2:Migration = object :Migration(1,2)
         {

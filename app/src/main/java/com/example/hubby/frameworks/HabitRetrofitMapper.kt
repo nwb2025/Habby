@@ -1,7 +1,7 @@
 package com.example.hubby.frameworks
 
 import com.example.core.domain.models.HabitDomainLayer
-import com.example.hubby.data.api.HabitResponse
+import com.example.hubby.data.models.HabitResponse
 import com.example.hubby.utils.EntityMapper.EntityMapper
 
 class HabitRetrofitMapper : EntityMapper<HabitResponse, HabitDomainLayer>

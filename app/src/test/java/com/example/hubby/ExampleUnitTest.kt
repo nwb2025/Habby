@@ -11,8 +11,11 @@ import org.junit.runners.JUnit4
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+
+// RunWith - указывает Runner отвечающий за запуск тестов
 @RunWith(JUnit4::class)
 class ExampleUnitTest {
+    // Test method !
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)

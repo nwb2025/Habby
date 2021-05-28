@@ -11,25 +11,42 @@ import kotlinx.coroutines.flow.Flow
 // it calls dependency inversion - when your code doesnt depend on specific impl
 // control inversion - when you pass an impl in constructor
 
-class HabitRepository ( private val dataSource :  HabitDataSource )
-{
-    suspend fun addHabit(habit:HabitDomainLayer) = dataSource.add(habit)
+class HabitRepository (
+        private val localDataSource :  LocalDataDataSource,
+        private val remoteDataDataSource: RemoteDataDataSource) {
+    var isCacheDirty = false
 
-    suspend fun put(habit: HabitDomainLayer) : Answer {
-        return dataSource.put(habit)
+    // TODO : MAKE it a Singleton !
+    // TODO: Delete extra Usecase getByType - instead of it - get the whole list and parse it
+
+    fun getHabits(): Flow<List<HabitDomainLayer>> {
+        return if (isCacheDirty)
+        {
+            remoteDataDataSource.getAll()
+            // refreshLocalDataSource(habitListe
+            localDataSource.getAll()
+        }
+        else{
+            refreshCache()
+            localDataSource.getAll()
+        }
+
     }
 
-    fun getAll() : Flow<List<HabitDomainLayer>> = dataSource.getAll()
+    suspend fun addHabit(habit: HabitDomainLayer) = localDataSource.add(habit)
+    suspend fun put(habit: HabitDomainLayer) : Answer =  remoteDataDataSource.put(habit)
+    suspend fun deleteHabit(habit: HabitDomainLayer) = localDataSource.remove(habit)
+    suspend fun deleteFromServer(uid:HashMap<String,String>) = remoteDataDataSource.deleteFromServer(uid)
 
-    fun getByType(type:String) : Flow<List<HabitDomainLayer>> = dataSource.getByType(type)
+    suspend fun updateDoneDates(doneDates:String, id:String) = localDataSource.updateDoneDates(doneDates, id)
+    suspend fun postDone(habit: HabitDone) = remoteDataDataSource.postDone(habit)
 
-    suspend fun deleteHabit(habit: HabitDomainLayer) = dataSource.remove(habit)
+    suspend fun updateHabit(habit: HabitDomainLayer) = localDataSource.updateHabit(habit)
 
-    suspend fun deleteFromServer(uid:HashMap<String,String>) = dataSource.deleteFromServer(uid)
+    private fun refreshLocalDataSource(){
 
-    suspend fun updateDoneDates(doneDates:String, id:String) = dataSource.updateDoneDates(doneDates, id)
-
-    suspend fun postDone(habit:HabitDone) = dataSource.postDone(habit)
-
-    suspend fun updateHabit(habit: HabitDomainLayer) = dataSource.updateHabit(habit)
+    }
+    private fun refreshCache(){
+        isCacheDirty = false
+    }
 }

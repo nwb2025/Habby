@@ -1,4 +1,4 @@
-package com.example.hubby.data.api
+package com.example.hubby.data.models
 
 
 data class HabitResponse

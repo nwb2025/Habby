@@ -1,4 +1,4 @@
-package com.example.hubby.data.db
+package com.example.hubby.data.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
