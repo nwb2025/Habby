@@ -1,29 +1,30 @@
 package com.example.hubby.frameworks
 
-import com.example.core.data.LocalDataDataSource
-import com.example.core.domain.models.HabitDomainLayer
-import com.example.hubby.data.db.Dao
+import com.example.data.LocalDataDataSource
+import com.example.data.db.Dao
+import com.example.domain.models.HabitDomainLayer
+import com.example.data.mappers.HabitDBMapper
+import com.example.data.models.Habit
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class RoomHabitDataSource ( private val dao: Dao?) : LocalDataDataSource
+class RoomHabitDataSource  @Inject constructor ( private val dao: Dao?) : LocalDataDataSource
 {
-    private val mapper = HabitDBMapper()
-
-    override suspend fun add(habit: HabitDomainLayer){
-        dao?.addHabit(mapper.mapToEntity(habit))
+    override suspend fun add(habit: Habit){
+        dao?.addHabit(habit)
     }
 
-    override fun getAll() : Flow<List<HabitDomainLayer>> =  dao!!.getAll()
+    override fun getAll() : Flow<List<Habit>> =  dao!!.getAll()
 
-    override suspend fun remove(habit: HabitDomainLayer){
-        dao?.deleteHabit(mapper.mapToEntity(habit))
+    override suspend fun remove(habit: Habit){
+        dao?.deleteHabit(habit)
     }
 
     override suspend fun updateDoneDates(doneDates: String, id: String) {
-        dao?.updateDoneDates ( doneDates, id)
+        dao?.updateDoneDates (doneDates, id)
     }
 
-    override suspend fun updateHabit(habit: HabitDomainLayer) {
-        dao?.updateHabit(mapper.mapToEntity(habit))
+    override suspend fun updateHabit(habit: Habit) {
+        dao?.updateHabit(habit)
     }
 }

@@ -9,24 +9,24 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hubby.R
 import com.example.hubby.databinding.RecViewLayoutBinding
-import com.example.hubby.data.models.Habit
+import com.example.domain.models.HabitDomainLayer
 
-class RecyclerView_Adapter (private val habitList:List<Habit>?,
-                            private val clickListener:(Habit) -> Boolean,
-                            private val doneListener: (Habit) -> Unit,
-                            private val editListener: (Habit) -> Unit) :
+class RecyclerView_Adapter (private val habitList:List<HabitDomainLayer>?,
+                            private val clickListener:(HabitDomainLayer) -> Boolean,
+                            private val doneListener: (HabitDomainLayer) -> Unit,
+                            private val editListener: (HabitDomainLayer) -> Unit) :
         RecyclerView.Adapter<RecyclerView_Adapter.ViewHolder>(),
         Filterable
 {
-    var habitFilteredList = mutableListOf<Habit>()
+    var habitFilteredList = mutableListOf<HabitDomainLayer>()
 
     init {
         habitFilteredList = habitList!!.toMutableList()
     }
 
     inner class ViewHolder(val binding:RecViewLayoutBinding) : RecyclerView.ViewHolder( binding.root ) {
-        fun bind(habit: Habit?,
-                 clickListener:(Habit) -> Boolean)
+        fun bind(habit : HabitDomainLayer?,
+                 clickListener:(HabitDomainLayer) -> Boolean)
         {
             binding.apply {
                 habitName.text = habit?.name
@@ -61,11 +61,11 @@ class RecyclerView_Adapter (private val habitList:List<Habit>?,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(habitFilteredList[position], clickListener)
 
-    private fun setCompleted(binding:RecViewLayoutBinding, habit: Habit?){
-        binding.completed.isChecked = !(habit?.done_dates?.isEmpty()!!  ||  ( (System.currentTimeMillis()/3600000 - habit.done_dates.last().toLong())   >= ((habit.count*24)/habit.frequency) ))
+    private fun setCompleted(binding:RecViewLayoutBinding, habit: HabitDomainLayer){
+        binding.completed.isChecked = !(habit.done_dates.isEmpty()  ||  ( (System.currentTimeMillis()/3600000 - habit.done_dates.last().toLong())   >= ((habit.count*24)/habit.frequency) ))
     }
 
-    fun updateHabitList(habitList:List<Habit>){
+    fun updateHabitList(habitList:List<HabitDomainLayer>){
         this.habitFilteredList = habitList.toMutableList()
         notifyDataSetChanged()
     }
@@ -75,9 +75,9 @@ class RecyclerView_Adapter (private val habitList:List<Habit>?,
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
                 habitFilteredList = if (charSearch.isEmpty()) {
-                    habitList!!.toMutableList<Habit>()
+                    habitList!!.toMutableList<HabitDomainLayer>()
                 } else {
-                    val resultList = mutableListOf<Habit>()
+                    val resultList = mutableListOf<HabitDomainLayer>()
                     for (row in habitList!!) {
                         if (row.name.toLowerCase().contains(charSearch,true)) {
                             resultList.add(row)
@@ -93,7 +93,7 @@ class RecyclerView_Adapter (private val habitList:List<Habit>?,
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                habitFilteredList = results!!.values as MutableList<Habit>
+                habitFilteredList = results!!.values as MutableList<HabitDomainLayer>
                 notifyDataSetChanged()
             }
         }

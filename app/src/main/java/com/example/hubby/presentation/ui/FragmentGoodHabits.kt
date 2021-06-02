@@ -13,9 +13,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hubby.R
-import com.example.hubby.data.models.Habit
 import com.example.hubby.databinding.FragmentGoodHabitsBinding
-import com.example.hubby.frameworks.HabitDBMapper
+import com.example.data.mappers.HabitDBMapper
+import com.example.domain.models.HabitDomainLayer
 import com.example.hubby.presentation.adapters.RecyclerView_Adapter
 import com.example.hubby.presentation.viewmodels.HabitViewModelForList
 import com.google.gson.Gson
@@ -26,7 +26,6 @@ class FragmentGoodHabits : Fragment()
     private lateinit var binding : FragmentGoodHabitsBinding
     private lateinit var rec_v_adapter: RecyclerView_Adapter
     private val viewModel by activityViewModels <HabitViewModelForList>()
-    private val mapper:HabitDBMapper = HabitDBMapper()
 
 
     override fun onCreateView(
@@ -40,16 +39,16 @@ class FragmentGoodHabits : Fragment()
 
     private fun setupObservers(){
         viewModel.habitList.observe( viewLifecycleOwner, Observer {
-            rec_v_adapter.updateHabitList(mapper.mapToEntityList(viewModel.habitList.value?.filter { it.type == 0 }!!) )
+            rec_v_adapter.updateHabitList(viewModel.habitList.value?.filter { it.type == 0 }!! )
         })
 
     }
 
     private  fun setUpAdapter(){
-        rec_v_adapter = RecyclerView_Adapter(mapper.mapToEntityList(viewModel.habitList.value?.filter { it.type == 0 } ?: listOf() ),
-                { habit: Habit ->  itemClicked(habit) },
-                { habit: Habit -> doneListener(habit) },
-                { habit: Habit -> editHabitListener(habit)})
+        rec_v_adapter = RecyclerView_Adapter(viewModel.habitList.value?.filter { it.type == 0 } ?: listOf() ,
+                { habit: HabitDomainLayer ->  itemClicked(habit) },
+                { habit: HabitDomainLayer -> doneListener(habit) },
+                { habit: HabitDomainLayer -> editHabitListener(habit)})
         binding.rvHabits.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = rec_v_adapter
@@ -61,7 +60,7 @@ class FragmentGoodHabits : Fragment()
         rec_v_adapter.filter.filter(s)
     }
 
-    fun itemClicked(habit: Habit) : Boolean{
+    fun itemClicked(habit: HabitDomainLayer) : Boolean{
         val name = habit.name
         val dialog:AlertDialog.Builder = AlertDialog.Builder(context)
         dialog.setTitle("Удаление привычки").setMessage("Вы действительно хотите удалить привычку ?")
@@ -75,16 +74,15 @@ class FragmentGoodHabits : Fragment()
         return true
     }
 
-    fun editHabitListener(habit: Habit) {
+    fun editHabitListener(habit : HabitDomainLayer) {
         val intent = Intent(activity, ActivityAddHabit::class.java)
         val gson: Gson = Gson()
         intent.putExtra("habit_edit", gson.toJson(habit))
         startActivity(intent)
     }
 
-    fun doneListener( habit: Habit) {
-        viewModel.updateDone(habit.done_dates, habit.uid)
-
+    fun doneListener( habit: HabitDomainLayer) {
+        viewModel.updateDone(habit.done_dates, habit.uid!!)
         Toast.makeText(context, " ${habit.uid} успешно обновлена   ",Toast.LENGTH_SHORT).show()
     }
 }

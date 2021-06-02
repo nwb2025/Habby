@@ -9,70 +9,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
-import com.example.core.data.HabitRepository
-import com.example.core.data.LocalDataDataSource
-import com.example.core.data.RemoteDataDataSource
-import com.example.core.domain.interactors.local_db.AddHabit
-import com.example.core.domain.interactors.local_db.DeleteHabit
-import com.example.core.domain.interactors.local_db.GetAllHabits
-import com.example.core.domain.interactors.local_db.UpdateDoneDates
-import com.example.core.domain.interactors.local_db.Updatehabit
-import com.example.core.interactors.local_db.*
-import com.example.core.interactors.retorfit.DeleteHabitFromServer
-import com.example.core.interactors.retorfit.PostHabit
-import com.example.core.interactors.retorfit.PutHabit
-import com.example.hubby.data.api.RetrofitInstance
-import com.example.hubby.data.db.AppDataBase
-import com.example.hubby.data.db.Dao
 import com.example.hubby.databinding.FragmenthomeBinding
-import com.example.hubby.frameworks.HabitDBMapper
-import com.example.hubby.frameworks.HabitRetrofitMapper
-import com.example.hubby.frameworks.RetrofitHabitDataSource
-import com.example.hubby.frameworks.RoomHabitDataSource
+import com.example.hubby.di.App
+import com.example.hubby.di.DaggerAppComponent
 import com.example.hubby.presentation.adapters.MyViewPagerAdapter
 import com.example.hubby.presentation.viewmodels.HabitViewModelForList
-import com.example.hubby.presentation.viewmodels.ViewModelFactory
+import javax.inject.Inject
 
 
 class HomeFragment : Fragment()
 {
     private lateinit var binding : FragmenthomeBinding
-    private var db : AppDataBase? = null
-    private var hDao : Dao? = null
-    private var localDataSource: RoomHabitDataSource? = null
-    private var remoteDataSource : RetrofitHabitDataSource? = null
     private var sharedViewModel: HabitViewModelForList? = null
-    private var repo: HabitRepository? = null
-    private var repoRetrofit : HabitRepository? = null
     private  lateinit var myContext:MainActivity
     private lateinit var adapter: MyViewPagerAdapter
     private lateinit var goodFragment:FragmentGoodHabits
     private lateinit var badFragment:FragmentBadHabits
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        db = AppDataBase.getAppDB( context = myContext )
-        hDao = db?.habitDao()
-        localDataSource = RoomHabitDataSource(hDao)
-        remoteDataSource = RetrofitHabitDataSource(RetrofitInstance)
-        repo = HabitRepository(
-                localDataSource as LocalDataDataSource,
-                remoteDataSource as RemoteDataDataSource)
+        (activity?.application as App).appComponent.inject(HomeFragment@this)
 
-        val factory = ViewModelFactory(
-            GetAllHabits(repo as HabitRepository),
-            AddHabit(repo as HabitRepository),
-            DeleteHabit(repo as HabitRepository),
-            DeleteHabitFromServer(repo as HabitRepository),
-            PutHabit(repo as HabitRepository),
-            UpdateDoneDates(repo as HabitRepository),
-            PostHabit(repo as HabitRepository),
-            Updatehabit(repo as HabitRepository),
-            HabitDBMapper() ,
-            HabitRetrofitMapper() )
-
-        sharedViewModel = ViewModelProvider( myContext, factory).get(HabitViewModelForList::class.java)
-
+        sharedViewModel = ViewModelProvider( myContext, viewModelFactory).get(HabitViewModelForList::class.java)
     }
 
     override fun onCreateView(

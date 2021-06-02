@@ -2,40 +2,35 @@ package com.example.hubby.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.core.domain.interactors.local_db.AddHabit
-import com.example.core.domain.interactors.local_db.DeleteHabit
-import com.example.core.domain.interactors.local_db.GetAllHabits
-import com.example.core.domain.interactors.local_db.UpdateDoneDates
-import com.example.core.domain.interactors.local_db.Updatehabit
-import com.example.core.interactors.local_db.*
-import com.example.core.interactors.retorfit.DeleteHabitFromServer
-import com.example.core.interactors.retorfit.PostHabit
-import com.example.core.interactors.retorfit.PutHabit
-import com.example.hubby.frameworks.HabitDBMapper
-import com.example.hubby.frameworks.HabitRetrofitMapper
+import com.example.domain.interactors.local_db.AddHabit
+import com.example.domain.interactors.local_db.DeleteHabit
+import com.example.domain.interactors.local_db.GetAllHabits
+import com.example.domain.interactors.local_db.UpdateDoneDates
+import com.example.domain.interactors.local_db.Updatehabit
+import com.example.domain.interactors.retorfit.DeleteHabitFromServer
+import com.example.domain.interactors.retorfit.PostHabit
+import com.example.domain.interactors.retorfit.PutHabit
+import javax.inject.Inject
 
-class ViewModelFactory (private val getHabits: GetAllHabits,
+class ViewModelFactory @Inject constructor(private val getHabits: GetAllHabits,
                         private  val addHabit: AddHabit,
                         private val deleteH: DeleteHabit,
                         private val deleteFromS: DeleteHabitFromServer,
                         private val putHabit: PutHabit,
                         private val updateDoneDates: UpdateDoneDates,
-                        private val updateDoneOnS:PostHabit,
-                        private val updateHabit: Updatehabit,
-                        private val mapper:HabitDBMapper,
-                        private val mapperApi: HabitRetrofitMapper) : ViewModelProvider.Factory
+                        private val updateDoneOnS: PostHabit,
+                        private val updateHabit: Updatehabit
+) : ViewModelProvider.Factory
 {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T
-    {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if ( modelClass.isAssignableFrom(HabitViewModel::class.java )) {
             return  HabitViewModel(
                 addHabit,
                 putHabit,
                 updateDoneDates,
                 updateDoneOnS,
-                updateHabit,
-                mapper,
-                mapperApi) as T
+                updateHabit
+            ) as T
 
         }
         else if(modelClass.isAssignableFrom(HabitViewModelForList::class.java)){
@@ -44,13 +39,8 @@ class ViewModelFactory (private val getHabits: GetAllHabits,
                 deleteH,
                 deleteFromS,
                 updateDoneDates,
-                updateDoneOnS,
-                mapper,
-                mapperApi) as T
+                updateDoneOnS ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-
-
-
 }
