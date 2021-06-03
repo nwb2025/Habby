@@ -15,4 +15,5 @@ interface Repo {
     suspend fun updateDoneDates(doneDates:String, id:String)
     suspend fun postDone(habit: HabitDone)
     suspend fun updateHabit(habit: HabitDomainLayer)
+    fun deleteAll()
 }

@@ -24,4 +24,7 @@ interface Dao {
 
     @Update
     suspend fun updateHabit(habit : Habit)
+
+    @Query("DELETE FROM habits")
+    fun deleteAll()
 }

@@ -30,7 +30,7 @@ abstract  class AppDataBase : RoomDatabase() {
             synchronized( AppDataBase::class) {
                 INSTANCE = Room.databaseBuilder(context.applicationContext,
                         AppDataBase::class.java,
-                        "hatt.db"
+                        "habbs.db"
                 )
                     .build()
             }

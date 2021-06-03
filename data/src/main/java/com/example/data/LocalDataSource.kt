@@ -13,6 +13,7 @@ interface LocalDataDataSource
     suspend fun remove(habit : Habit)
     suspend fun updateDoneDates(doneDates : String, uid : String)
     suspend fun updateHabit(habit : Habit)
+    fun removeAll()
 
 }
 

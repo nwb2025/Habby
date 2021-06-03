@@ -27,4 +27,8 @@ class RoomHabitDataSource  @Inject constructor ( private val dao: Dao?) : LocalD
     override suspend fun updateHabit(habit: Habit) {
         dao?.updateHabit(habit)
     }
+
+    override fun removeAll() {
+        dao?.deleteAll()
+    }
 }

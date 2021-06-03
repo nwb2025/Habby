@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hubby.R
 import com.example.hubby.presentation.adapters.RecyclerView_Adapter
 import com.example.hubby.databinding.FragmentBadHabitsBinding
-import com.example.data.mappers.HabitDBMapper
 import com.example.domain.models.HabitDomainLayer
 import com.example.hubby.presentation.viewmodels.HabitViewModelForList
 
@@ -23,8 +22,6 @@ class FragmentBadHabits : Fragment() {
     private lateinit var binding : FragmentBadHabitsBinding
     private lateinit var rec_v_adapter: RecyclerView_Adapter
     private val viewModel by activityViewModels <HabitViewModelForList>()
-    private val mapper: HabitDBMapper = HabitDBMapper()
-
     @Override
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +29,6 @@ class FragmentBadHabits : Fragment() {
         binding = DataBindingUtil.inflate(inflater , R.layout.fragment_bad_habits , container, false)
         initRecView()
         setupObservers()
-        // { } is because we pass a function as an argument
         return binding.root
     }
     private fun setupObservers(){

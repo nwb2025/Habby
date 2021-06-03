@@ -20,7 +20,7 @@ class RetrofitHabitDataSource  @Inject constructor
        return  retroApi.api.putHabit(Constants.API_KEY, habit)
     }
 
-    override suspend fun getAll(): Response<List<HabitResponse>> {
+    override  fun getAll(): Call<List<HabitResponse>> {
         return retroApi.api.getHabits(Constants.API_KEY)
     }
     override suspend fun deleteFromServer(uid : HashMap<String,String>) = retroApi.api.deleteHabit(Constants.API_KEY, uid)

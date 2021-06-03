@@ -32,10 +32,9 @@ class  HabitViewModel  @Inject constructor(
     @Bindable
     val count = MutableLiveData<String>()
     @Bindable
-    val frequency = MutableLiveData<String>()
+    val frequency = MutableLiveData<String>().apply { value = "1"}
     @Bindable
-    val ch_color = MutableLiveData<Int>()
-    private var col:Int = -65536
+    val ch_color = MutableLiveData<Int>().apply { value = 0 }
     private var priority:Int = 0
 
 
@@ -48,9 +47,10 @@ class  HabitViewModel  @Inject constructor(
             val freq = frequency.value?.toInt()
             val count =  count.value?.toInt()
             val done_dates = ArrayList<Int>()
+            val color = ch_color.value!!
             when {
                 goodH.value  == true -> {
-                    val result = putHabit(HabitDomainLayer(null,count!!,date,des,freq!!,priority,n,0,col, done_dates))
+                    val result = putHabit(HabitDomainLayer(null,count!!,date,des,freq!!,priority,n,0,color, done_dates))
                     addHabit(
                         HabitDomainLayer(
                             uid = result.uid,
@@ -62,12 +62,12 @@ class  HabitViewModel  @Inject constructor(
                             name = n,
                             type = 0,
                             done_dates = done_dates,
-                            color = col
+                            color = color
                         )
                     )
                 }
                 badH.value == true -> {
-                    val result = putHabit(HabitDomainLayer(null,count!!,date,des,freq!!,priority,n,1,col, done_dates))
+                    val result = putHabit(HabitDomainLayer(null,count!!,date,des,freq!!,priority,n,1,color, done_dates))
                     addHabit(
                         HabitDomainLayer(
                             uid = result.uid,
@@ -79,7 +79,7 @@ class  HabitViewModel  @Inject constructor(
                             name = n,
                             type = 1,
                             done_dates = done_dates,
-                            color = col
+                            color = color
                         )
                     )
                 }
@@ -92,6 +92,7 @@ class  HabitViewModel  @Inject constructor(
         goodH.value = null
         frequency.value = null
         count.value = null
+        ch_color.value = 0
     }
 
     fun updateHabit(uid:String){
@@ -104,6 +105,7 @@ class  HabitViewModel  @Inject constructor(
             val freq = frequency.value!!.toInt()
             val count =  count.value!!.toInt()
             val done_dates = ArrayList<Int>()
+            val color = ch_color.value!!
             when {
                 goodH.value  == true -> {
                     //putHabit(HabitDomainLayer(uid,count!!,date,des,freq!!,priority,n,0,col, done_dates))
@@ -118,7 +120,7 @@ class  HabitViewModel  @Inject constructor(
                             name = n,
                             type = 0 ,
                             done_dates = done_dates,
-                            color = col))
+                            color = color))
                 }
                 badH.value == true -> {
                     //putHabit(HabitDomainLayer(uid,count!!,date,des,freq!!,priority,n,1,col, done_dates))
@@ -133,7 +135,7 @@ class  HabitViewModel  @Inject constructor(
                         name = n,
                         type = 1 ,
                         done_dates = done_dates,
-                        color = col))
+                        color = color))
                 }
             }
         }
@@ -142,13 +144,13 @@ class  HabitViewModel  @Inject constructor(
         desc.value = null
         badH.value = null
         goodH.value = null
-        frequency.value = null
+        frequency.value = "1"
         count.value = null
+        ch_color.value = 0
     }
 
     fun setColor(color:Int?){
-        if (color != null)
-            col = color
+        ch_color.apply { value = color }
     }
 
     fun setPriority(pr:Int){

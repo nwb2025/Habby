@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hubby.R
 import com.example.hubby.databinding.FragmentGoodHabitsBinding
-import com.example.data.mappers.HabitDBMapper
 import com.example.domain.models.HabitDomainLayer
 import com.example.hubby.presentation.adapters.RecyclerView_Adapter
 import com.example.hubby.presentation.viewmodels.HabitViewModelForList
@@ -26,7 +25,6 @@ class FragmentGoodHabits : Fragment()
     private lateinit var binding : FragmentGoodHabitsBinding
     private lateinit var rec_v_adapter: RecyclerView_Adapter
     private val viewModel by activityViewModels <HabitViewModelForList>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

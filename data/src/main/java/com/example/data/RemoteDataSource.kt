@@ -11,7 +11,8 @@ import retrofit2.Response
 
 interface RemoteDataDataSource {
     suspend fun put(habit: HabitResponse) : Answer
-    suspend fun getAll() : Response<List<HabitResponse>>
+    //suspend fun getAll() : Response<List<HabitResponse>>
+    fun getAll() : Call<List<HabitResponse>>
     suspend fun deleteFromServer(uid: HashMap<String,String>)
     suspend fun postDone(habitDone: HabitDone)
 }

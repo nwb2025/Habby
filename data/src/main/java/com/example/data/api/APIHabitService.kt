@@ -12,7 +12,7 @@ import retrofit2.http.*
 interface APIHabitService
 {
     @GET(Constants._URL)
-    suspend fun getHabits(@Header("Authorization") token:String) : Response<List<HabitResponse>>
+    fun getHabits(@Header("Authorization") token:String) : Call<List<HabitResponse>>
 
     @PUT(Constants._URL)
     suspend fun  putHabit(@Header("Authorization") token: String,

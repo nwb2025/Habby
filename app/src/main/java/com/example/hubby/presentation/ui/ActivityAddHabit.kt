@@ -9,69 +9,28 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.hubby.databinding.ActivityAddHabitBinding
-import com.example.data.LocalDataDataSource
-import com.example.data.RemoteDataDataSource
-import com.example.domain.interactors.local_db.AddHabit
-import com.example.domain.interactors.local_db.DeleteHabit
-import com.example.domain.interactors.local_db.GetAllHabits
-import com.example.domain.interactors.local_db.UpdateDoneDates
-import com.example.domain.interactors.local_db.Updatehabit
-import com.example.domain.interactors.retorfit.DeleteHabitFromServer
-import com.example.domain.interactors.retorfit.PostHabit
-import com.example.domain.interactors.retorfit.PutHabit
 import com.example.hubby.presentation.viewmodels.HabitViewModel
 import com.example.hubby.R
-import com.example.data.mappers.HabitDBMapper
-import com.example.data.mappers.HabitRetrofitMapper
 import com.example.data.models.Habit
-import com.example.data.repo.HabitRepositoryImp
-import com.example.hubby.frameworks.AppDataBase
-import com.example.hubby.frameworks.RetrofitHabitDataSource
-import com.example.hubby.frameworks.RetrofitInstance
-import com.example.hubby.frameworks.RoomHabitDataSource
-import com.example.hubby.presentation.viewmodels.ViewModelFactory
+import com.example.hubby.di.App
 import com.google.gson.Gson
+import javax.inject.Inject
 
 class ActivityAddHabit : AppCompatActivity()
 {
-    private var db : AppDataBase? = null
-    private var hDao : com.example.data.db.Dao? = null
     private lateinit var binding : ActivityAddHabitBinding
     private var viewModel: HabitViewModel? = null
-    private var localDataSource : RoomHabitDataSource? = null
-    private var remoteDataSource : RetrofitHabitDataSource? = null
-    private var reposotory : HabitRepositoryImp? = null
     private var color:Int? = -65536
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val priorities = resources.getStringArray( R.array.priorities )
+        (application as App).appComponent.inject(ActivityAddHabit@this)
+
         binding = DataBindingUtil.setContentView(this , R.layout.activity_add_habit )
         val bundle:Bundle?  = intent.extras
-        // From local DB
-        db = AppDataBase.getAppDB( context =  this)
-        hDao = db?.habitDao()
-        localDataSource = RoomHabitDataSource(hDao)
-        remoteDataSource =  RetrofitHabitDataSource(RetrofitInstance)
-        reposotory = HabitRepositoryImp(
-                localDataSource as LocalDataDataSource,
-                remoteDataSource as RemoteDataDataSource,
-                HabitDBMapper() ,
-                HabitRetrofitMapper()
-        )
-        val factory = ViewModelFactory (
-            GetAllHabits(reposotory as HabitRepositoryImp),
-            AddHabit(reposotory as HabitRepositoryImp),
-            DeleteHabit(reposotory as HabitRepositoryImp),
-            DeleteHabitFromServer(reposotory as HabitRepositoryImp),
-            PutHabit(reposotory as HabitRepositoryImp),
-            UpdateDoneDates(reposotory as HabitRepositoryImp),
-            PostHabit(reposotory as HabitRepositoryImp),
-            Updatehabit(reposotory as HabitRepositoryImp)
-        )
 
-        viewModel = ViewModelProvider(this, factory).get(HabitViewModel::class.java)
-
+        viewModel = ViewModelProvider(this, viewModelFactory).get(HabitViewModel::class.java)
         binding.lifecycleOwner = this
         binding.vm = viewModel
 

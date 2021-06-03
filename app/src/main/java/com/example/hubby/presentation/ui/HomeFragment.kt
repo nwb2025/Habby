@@ -11,11 +11,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.example.hubby.databinding.FragmenthomeBinding
 import com.example.hubby.di.App
-import com.example.hubby.di.DaggerAppComponent
 import com.example.hubby.presentation.adapters.MyViewPagerAdapter
 import com.example.hubby.presentation.viewmodels.HabitViewModelForList
 import javax.inject.Inject
-
 
 class HomeFragment : Fragment()
 {
@@ -37,16 +35,13 @@ class HomeFragment : Fragment()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?
-    {
+    ): View? {
         binding = FragmenthomeBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
     }
 
-    private fun initViews()
-    {
-        // TODO: should be fixed
+    private fun initViews() {
         goodFragment = FragmentGoodHabits()
         badFragment = FragmentBadHabits()
         adapter = MyViewPagerAdapter(childFragmentManager)
